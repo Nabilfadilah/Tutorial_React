@@ -1,6 +1,19 @@
 import React from "react";
-import ButtonAll from "./components/elements/button";
+import LoginPage from "./pages/login";
+import RegisterPage from "./pages/register";
 
+function App() {
+  return (
+    <div className="flex justify-center min-h-screen items-center">
+      {/* <LoginPage></LoginPage> */}
+      <RegisterPage />
+    </div>
+  );
+}
+
+export default App;
+
+// tutor video ke 1-4
 // component untuk mendeklarasikan button
 // class Button extends React.Component {
 //   render() {
@@ -55,47 +68,45 @@ import ButtonAll from "./components/elements/button";
 //   );
 // };
 
-function App() {
-  return (
-    <>
-      {/* cara membuat component dalam react, seperti Button ini */}
-      <div className="flex justify-center min-h-screen items-center">
-        <div className="flex gap-x-3">
-          {/* <Button></Button> */}
-          <h1 className="bg-gray-200 rounded-b-lg p-5 text-cyan-700">
-            Hallo Semuanya
-          </h1>
-          <ButtonAll>Beda component</ButtonAll>
-          {/* <Button /> */}
+// function App() {
+//   return (
+//     <>
+//       {/* cara membuat component dalam react, seperti Button ini */}
+//       <div className="flex justify-center min-h-screen items-center">
+//         <div className="flex gap-x-3">
+//           {/* <Button></Button> */}
+//           <h1 className="bg-gray-200 rounded-b-lg p-5 text-cyan-700">
+//             Hallo Semuanya
+//           </h1>
+//           <ButtonAll>Beda component</ButtonAll>
+//           {/* <Button /> */}
 
-          {/* <ButtonBlack /> */}
+//           {/* <ButtonBlack /> */}
 
-          {/* <ButtonRed /> */}
+//           {/* <ButtonRed /> */}
 
-          {/* props */}
-          {/* <ButtonAll variant="bg-red-700" text="Props"></ButtonAll>
-          <ButtonAll variant="bg-slate-500" text="Login"></ButtonAll> */}
+//           {/* props */}
+//           {/* <ButtonAll variant="bg-red-700" text="Props"></ButtonAll>
+//           <ButtonAll variant="bg-slate-500" text="Login"></ButtonAll> */}
 
-          {/* props (children) */}
-          {/* <ButtonAll variant="bg-yellow-700">Logout</ButtonAll>
-          <ButtonAll variant="bg-green-500">Profil</ButtonAll> */}
+//           {/* props (children) */}
+//           {/* <ButtonAll variant="bg-yellow-700">Logout</ButtonAll>
+//           <ButtonAll variant="bg-green-500">Profil</ButtonAll> */}
 
-          {/* konsep desctrukturing */}
-          {/* <ButtonAll></ButtonAll> */}
-        </div>
+//           {/* konsep desctrukturing */}
+//           {/* <ButtonAll></ButtonAll> */}
+//         </div>
 
-        {/* <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-          Button Now
-        </button>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-          Button Now
-        </button>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-          Button Now
-        </button> */}
-      </div>
-    </>
-  );
-}
-
-export default App;
+//         {/* <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+//           Button Now
+//         </button>
+//         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+//           Button Now
+//         </button>
+//         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+//           Button Now
+//         </button> */}
+//       </div>
+//     </>
+//   );
+// }

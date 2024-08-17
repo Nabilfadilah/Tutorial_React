@@ -7,14 +7,14 @@ const CardProduct = (props) => {
 
   return (
     <div>
-      <div className="w-full max-w-sm bg-gray-200 border border-gray-300 rounded-lg shadow">
+      <div className="w-full max-w-sm bg-gray-200 border border-gray-300 rounded-lg shadow mx-2 flex flex-col justify-between">
         {children}
       </div>
     </div>
   );
 };
 
-// bisa tidak pakai props atau pakai juga bisa, seperti (image, title, price)
+// bisa tidak pakai props atau pakai juga bisa, seperti (image, name, price)
 const Header = (props) => {
   // destructuring
   const { image } = props;
@@ -33,13 +33,13 @@ const Header = (props) => {
 
 const Body = (props) => {
   // destructuring
-  const { children, title } = props;
+  const { children, name } = props;
 
   return (
-    <div className="px-5 pb-5">
+    <div className="px-5 pb-5 h-full">
       <a href="">
         <h5 className="text-xl font-semibold tracking-tight text-black">
-          {title}
+          {name}
         </h5>
         <p className="text-m text-black">{children}</p>
       </a>

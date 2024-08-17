@@ -1,7 +1,9 @@
 import React from "react";
 import CardProduct from "../components/fragments/CardProduct";
 import ButtonAll from "../components/elements/button";
+import Counter from "../components/fragments/Counter";
 
+// stateless/function component
 const ProductsPage = () => {
   // handle untuk logout
   const handleLogout = () => {
@@ -43,6 +45,11 @@ const ProductsPage = () => {
             <CardProduct.Footer price={product.price} />
           </CardProduct>
         ))}
+      </div>
+
+      {/* coba-coba state di fragment */}
+      <div className="flex justify-center">
+        <Counter></Counter>
       </div>
     </>
   );

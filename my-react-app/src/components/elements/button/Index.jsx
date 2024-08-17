@@ -3,13 +3,20 @@
 // didefinsikan sebagai sebuah varameter funtion
 const ButtonAll = (props) => {
   // konsep desctrukturing
-  const { children, className = "bg-black" } = props;
+  const {
+    children,
+    className = "bg-black",
+    onClick = () => {},
+    type = "button",
+  } = props;
   return (
     <button
       // className={`h-10 px-6 font-semibold rounded-md ${props.variant} text-black`}
       // konsep desctrukturing
       className={`h-10 px-6 font-semibold rounded-md ${className} text-white`}
-      type="submit"
+      type={type}
+      // event handler
+      onClick={() => onClick()}
     >
       {/* {props.text} */}
 

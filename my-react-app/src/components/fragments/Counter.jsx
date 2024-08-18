@@ -8,6 +8,24 @@ class Counter extends React.Component {
     this.state = {
       count: 0,
     };
+    console.log("construktor");
+  }
+
+  // component didmoun
+  // diawal
+  componentDidMount() {
+    this.setState({ count: 1 });
+    console.log("componentDidMount");
+  }
+
+  // componet didupdate
+  // akan melihat setiap perubahan yang terjadi
+  // bisa props, state, atau force
+  componentDidUpdate(prevProps, prevState) {
+    console.log("componenDidUpdate");
+    if (this.state.count === 10) {
+      this.setState({ count: 0 });
+    }
   }
 
   render() {
@@ -20,6 +38,7 @@ class Counter extends React.Component {
         >
           +
         </button>
+        {console.log("render")}
       </div>
     );
   }

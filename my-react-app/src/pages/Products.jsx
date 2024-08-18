@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CardProduct from "../components/fragments/CardProduct";
 import ButtonAll from "../components/elements/button";
 import Counter from "../components/fragments/Counter";
@@ -6,12 +6,29 @@ import Counter from "../components/fragments/Counter";
 // stateless/function component
 const ProductsPage = () => {
   // state cart useState
-  const [cart, setCart] = useState([
-    {
-      id: 1,
-      qty: 1,
-    },
-  ]);
+  const [cart, setCart] = useState([]);
+
+  // useEffect untuk memanipulasi komponen
+  const [totalPrice, setTotalPrice] = useState(0);
+  useEffect(() => {
+    // setCart([{ id: 1, qty: 1 }]);
+    setCart(JSON.parse(localStorage.getItem("cart")) || []);
+    // JSON.parse, adalah untuk mengkonfersi JOSN string menjadi Objek
+  }, []); // defendensi bisa kosong, agar gak error
+
+  // cara menggunakan didunmoun yaiti pakai useEffect
+  useEffect(() => {
+    if (cart.length > 0) {
+      const sum = cart.reduce((acc, item) => {
+        const product = products.find((product) => product.id === item.id);
+        return acc + product.price * item.qty;
+      }, 0);
+      setTotalPrice(sum);
+      // agar menyimpan ke localStorage, agar ketika di refres masih ada
+      localStorage.setItem("cart", JSON.stringify(cart));
+      // JSON.stringify, adalah sebuah function untuk konfersi JS value menjadi JSON
+    }
+  }, [cart]);
 
   // handle untuk logout
   const handleLogout = () => {
@@ -114,6 +131,22 @@ const ProductsPage = () => {
                   </tr>
                 );
               })}
+
+              {/*  */}
+              <tr>
+                <td colSpan={3}>
+                  <b>Total Price</b>
+                </td>
+                <td>
+                  <b>
+                    Rp{" "}
+                    {totalPrice.toLocaleString("id-ID", {
+                      styles: "currency",
+                      currency: "IDR",
+                    })}
+                  </b>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>

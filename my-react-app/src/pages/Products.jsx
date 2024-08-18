@@ -1,15 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import CardProduct from "../components/fragments/CardProduct";
 import ButtonAll from "../components/elements/button";
 import Counter from "../components/fragments/Counter";
 
 // stateless/function component
 const ProductsPage = () => {
+  // state cart useState
+  const [cart, setCart] = useState([
+    {
+      id: 1,
+      qty: 1,
+    },
+  ]);
+
   // handle untuk logout
   const handleLogout = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("password");
     window.location.href = "/login";
+  };
+
+  // handle add cart
+  const handleAddToCart = (id) => {
+    // mengecek apakah ada id yang sudah ditampilkan?
+    if (cart.find((item) => item.id === id)) {
+      // jika ada maka set idnya agar cuma qty yang bertambah
+      setCart(
+        cart.map((item) =>
+          item.id === id ? { ...item, qty: item.qty + 1 } : item
+        )
+      );
+    } else {
+      setCart([...cart, { id, qty: 1 }]);
+    }
   };
 
   return (
@@ -34,17 +57,66 @@ const ProductsPage = () => {
         <CardProduct.Footer price="Rp. 1.000.000"></CardProduct.Footer> */}
         {/* </CardProduct> */}
 
-        {/* mapping data produk untuk Rendering List */}
-        {products.map((product) => (
-          <CardProduct key={product.id}>
-            {/* bisa tidak pakai props atau pakai juga bisa, seperti (image, name, price) */}
-            <CardProduct.Header image={product.image} />
-            <CardProduct.Body name={product.name}>
-              {product.description}
-            </CardProduct.Body>
-            <CardProduct.Footer price={product.price} />
-          </CardProduct>
-        ))}
+        {/* useState */}
+        <div className="w-3/6 flex flex-wrap">
+          {/* mapping data produk untuk Rendering List */}
+          {products.map((product) => (
+            <CardProduct key={product.id}>
+              {/* bisa tidak pakai props atau pakai juga bisa, seperti (image, name, price) */}
+              <CardProduct.Header image={product.image} />
+              <CardProduct.Body name={product.name}>
+                {product.description}
+              </CardProduct.Body>
+              <CardProduct.Footer
+                price={product.price}
+                id={product.id}
+                handleAddToCart={handleAddToCart}
+              />
+            </CardProduct>
+          ))}
+        </div>
+
+        {/* Card */}
+        <div className="w-2/6">
+          <h1 className="text-3xl font-bold text-blue-600 ml-5 mb-2">Cart</h1>
+          <table className="text-left table-auto border-separate border-spacing-x-5">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cart.map((item) => {
+                const product = products.find(
+                  (product) => product.id === item.id
+                );
+                return (
+                  <tr key={item.id}>
+                    <td>{product.name}</td>
+                    <td>
+                      Rp{" "}
+                      {product.price.toLocaleString("id-ID", {
+                        styles: "currency",
+                        currency: "IDR",
+                      })}
+                    </td>
+                    <td>{item.qty}</td>
+                    <td>
+                      Rp{" "}
+                      {(item.qty * product.price).toLocaleString("id-ID", {
+                        styles: "currency",
+                        currency: "IDR",
+                      })}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* coba-coba state di fragment */}
@@ -65,7 +137,7 @@ const products = [
   {
     id: 1,
     name: "Sepatu Baru",
-    price: "Rp. 1.000.000",
+    price: 1000000,
     image: "/images/shoes1.jpg",
     description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
           Exercitationem suscipit qui ad facilis sunt consectetur consequuntur
@@ -75,7 +147,7 @@ const products = [
   {
     id: 2,
     name: "Sepatu Lama",
-    price: "Rp. 500.000",
+    price: 500000,
     image: "/images/shoes2.jpg",
     description: `tempora ipsum voluptates explicabo voluptate eligendi ipsa fugit, quae
           quos repudiandae optio ducimus ipsam.`,
@@ -83,7 +155,7 @@ const products = [
   {
     id: 3,
     name: "Sepatu Lumayan",
-    price: "Rp. 1.400.000",
+    price: 1400000,
     image: "/images/shoes1.jpg",
     description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
           Exercitationem suscipit qui ad facilis sunt consectetur consequuntur

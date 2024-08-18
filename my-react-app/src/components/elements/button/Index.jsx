@@ -16,7 +16,7 @@ const ButtonAll = (props) => {
       className={`h-10 px-6 font-semibold rounded-md ${className} text-white`}
       type={type}
       // event handler
-      onClick={() => onClick()}
+      onClick={onClick}
     >
       {/* {props.text} */}
 

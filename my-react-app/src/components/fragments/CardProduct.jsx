@@ -7,7 +7,7 @@ const CardProduct = (props) => {
 
   return (
     <div>
-      <div className="w-full max-w-sm bg-gray-200 border border-gray-300 rounded-lg shadow mx-2 flex flex-col justify-between">
+      <div className="w-full max-w-xs bg-gray-200 border border-gray-300 rounded-lg shadow mx-3 my-2 flex flex-col justify-between">
         {children}
       </div>
     </div>
@@ -49,12 +49,17 @@ const Body = (props) => {
 
 const Footer = (props) => {
   // destrukturing
-  const { price } = props;
+  const { price, handleAddToCart, id } = props;
 
   return (
     <div className="flex px-5 pb-3 items-center justify-between">
-      <span className="text-xl font-bold text-black">{price}</span>
-      <ButtonAll className="bg-blue-600">Add To Cart</ButtonAll>
+      <span className="text-xl font-bold text-black">
+        Rp{" "}
+        {price.toLocaleString("id-ID", { styles: "currency", currency: "IDR" })}
+      </span>
+      <ButtonAll className="bg-blue-600" onClick={() => handleAddToCart(id)}>
+        Add To Cart
+      </ButtonAll>
     </div>
   );
 };

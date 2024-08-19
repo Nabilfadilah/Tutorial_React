@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import ButtonAll from "../elements/button";
 import InputForm from "../elements/input/Index";
 
@@ -14,6 +15,14 @@ const FormLogin = () => {
     console.log("login");
   };
 
+  // useRef untuk input login
+  const emailRef = useRef(null);
+
+  // agar form login lagung diarahkan ke email
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
+
   return (
     <form onSubmit={handleLogin}>
       {/* email */}
@@ -22,6 +31,7 @@ const FormLogin = () => {
         type="email"
         placeholder="example@gmail.com"
         name="email"
+        ref={emailRef}
       ></InputForm>
 
       {/* password */}

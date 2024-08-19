@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CardProduct from "../components/fragments/CardProduct";
 import ButtonAll from "../components/elements/button";
 import Counter from "../components/fragments/Counter";
@@ -52,6 +52,27 @@ const ProductsPage = () => {
     }
   };
 
+  // useRef
+  // const cartRef = useRef([{ id: 1, qty: 1 }]);
+  const cartRef = useRef(JSON.parse(localStorage.getItem("cart")) || []);
+
+  const handleAddToCartRef = (id) => {
+    cartRef.current = [...cartRef.current, { id, qty: 1 }];
+    localStorage.setItem("cart", JSON.stringify(cartRef.current));
+  };
+
+  // total price
+  const totalPriceRef = useRef(null);
+  // console.log(totalPriceRef);
+  // memanipulasi
+  useEffect(() => {
+    if (cart.length > 0) {
+      totalPriceRef.current.style.display = "table-row";
+    } else {
+      totalPriceRef.current.style.display = "none";
+    }
+  }, [cart]);
+
   return (
     <>
       {/* sidebar */}
@@ -88,6 +109,7 @@ const ProductsPage = () => {
                 price={product.price}
                 id={product.id}
                 handleAddToCart={handleAddToCart}
+                // handleAddToCart={handleAddToCartRef}
               />
             </CardProduct>
           ))}
@@ -132,8 +154,8 @@ const ProductsPage = () => {
                 );
               })}
 
-              {/*  */}
-              <tr>
+              {/* total price */}
+              <tr ref={totalPriceRef}>
                 <td colSpan={3}>
                   <b>Total Price</b>
                 </td>

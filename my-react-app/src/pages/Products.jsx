@@ -128,7 +128,7 @@ const ProductsPage = () => {
             products.map((product) => (
               <CardProduct key={product.id}>
                 {/* bisa tidak pakai props atau pakai juga bisa, seperti (image, name, price) */}
-                <CardProduct.Header image={product.image} />
+                <CardProduct.Header image={product.image} id={product.id} />
                 <CardProduct.Body name={product.title}>
                   {product.description}
                 </CardProduct.Body>

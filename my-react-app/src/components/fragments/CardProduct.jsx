@@ -1,5 +1,6 @@
 import React from "react";
 import ButtonAll from "../elements/button";
+import { Link } from "react-router-dom";
 
 const CardProduct = (props) => {
   // destructuring
@@ -17,17 +18,17 @@ const CardProduct = (props) => {
 // bisa tidak pakai props atau pakai juga bisa, seperti (image, name, price)
 const Header = (props) => {
   // destructuring
-  const { image } = props;
+  const { image, id } = props;
 
   return (
-    <a href="#">
+    <Link to={`/product/${id}`}>
       <img
         // src="/images/shoes1.jpg"
         src={image}
         alt="products"
         className="p-8 rounded-t-lg h-60 w-full object-cover"
       />
-    </a>
+    </Link>
   );
 };
 

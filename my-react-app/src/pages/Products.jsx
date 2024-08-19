@@ -3,6 +3,7 @@ import CardProduct from "../components/fragments/CardProduct";
 import ButtonAll from "../components/elements/button";
 import Counter from "../components/fragments/Counter";
 import { getProducts } from "../services/Product.services";
+import { getUsername } from "../services/Auth.services";
 
 // stateless/function component
 const ProductsPage = () => {
@@ -12,12 +13,25 @@ const ProductsPage = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   // untuk get product
   const [products, setProducts] = useState([]);
+  // untuk memanggil username
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     // setCart([{ id: 1, qty: 1 }]);
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
     // JSON.parse, adalah untuk mengkonfersi JOSN string menjadi Objek
   }, []); // defendensi bisa kosong, agar gak error
+
+  // untuk memanggil name with API
+  useEffect(() => {
+    // tangkap tokennya!
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUserName(getUsername(token));
+    } else {
+      window.location.href = "/login";
+    }
+  }, []);
 
   // memanggil API get all
   useEffect(() => {
@@ -43,7 +57,7 @@ const ProductsPage = () => {
 
   // handle untuk logout
   const handleLogout = () => {
-    localStorage.removeItem("email");
+    localStorage.removeItem("token");
     localStorage.removeItem("password");
     window.location.href = "/login";
   };
@@ -88,7 +102,7 @@ const ProductsPage = () => {
     <>
       {/* sidebar */}
       <div className="flex justify-end h-20 bg-teal-800 text-white items-center px-10">
-        {email}
+        {userName}
         <ButtonAll className="ml-5 bg-black" onClick={handleLogout}>
           Logout
         </ButtonAll>
@@ -196,9 +210,6 @@ const ProductsPage = () => {
 };
 
 export default ProductsPage;
-
-// tangkap emailnya!
-const email = localStorage.getItem("email");
 
 // list produk data, untuk mapping banyak data dalam array
 // const products = [

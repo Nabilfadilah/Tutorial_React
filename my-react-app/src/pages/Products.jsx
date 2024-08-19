@@ -4,6 +4,7 @@ import ButtonAll from "../components/elements/button";
 import Counter from "../components/fragments/Counter";
 import { getProducts } from "../services/Product.services";
 import { getUsername } from "../services/Auth.services";
+import { useLogin } from "../hooks/UseLogin";
 
 // stateless/function component
 const ProductsPage = () => {
@@ -14,7 +15,7 @@ const ProductsPage = () => {
   // untuk get product
   const [products, setProducts] = useState([]);
   // untuk memanggil username
-  const [userName, setUserName] = useState("");
+  const userName = useLogin();
 
   useEffect(() => {
     // setCart([{ id: 1, qty: 1 }]);
@@ -23,15 +24,15 @@ const ProductsPage = () => {
   }, []); // defendensi bisa kosong, agar gak error
 
   // untuk memanggil name with API
-  useEffect(() => {
-    // tangkap tokennya!
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUserName(getUsername(token));
-    } else {
-      window.location.href = "/login";
-    }
-  }, []);
+  // useEffect(() => {
+  //   // tangkap tokennya!
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     setUserName(getUsername(token));
+  //   } else {
+  //     window.location.href = "/login";
+  //   }
+  // }, []);
 
   // memanggil API get all
   useEffect(() => {

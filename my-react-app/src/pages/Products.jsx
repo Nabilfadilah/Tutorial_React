@@ -2,23 +2,34 @@ import React, { useEffect, useRef, useState } from "react";
 import CardProduct from "../components/fragments/CardProduct";
 import ButtonAll from "../components/elements/button";
 import Counter from "../components/fragments/Counter";
+import { getProducts } from "../services/Product.services";
 
 // stateless/function component
 const ProductsPage = () => {
   // state cart useState
   const [cart, setCart] = useState([]);
-
   // useEffect untuk memanipulasi komponen
   const [totalPrice, setTotalPrice] = useState(0);
+  // untuk get product
+  const [products, setProducts] = useState([]);
+
   useEffect(() => {
     // setCart([{ id: 1, qty: 1 }]);
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
     // JSON.parse, adalah untuk mengkonfersi JOSN string menjadi Objek
   }, []); // defendensi bisa kosong, agar gak error
 
+  // memanggil API get all
+  useEffect(() => {
+    getProducts((data) => {
+      setProducts(data);
+      // console.log(data);
+    });
+  }, []);
+
   // cara menggunakan didunmoun yaiti pakai useEffect
   useEffect(() => {
-    if (cart.length > 0) {
+    if (products.length > 0 && cart.length > 0) {
       const sum = cart.reduce((acc, item) => {
         const product = products.find((product) => product.id === item.id);
         return acc + product.price * item.qty;
@@ -28,7 +39,7 @@ const ProductsPage = () => {
       localStorage.setItem("cart", JSON.stringify(cart));
       // JSON.stringify, adalah sebuah function untuk konfersi JS value menjadi JSON
     }
-  }, [cart]);
+  }, [cart, products]);
 
   // handle untuk logout
   const handleLogout = () => {
@@ -96,27 +107,28 @@ const ProductsPage = () => {
         {/* </CardProduct> */}
 
         {/* useState */}
-        <div className="w-3/6 flex flex-wrap">
+        <div className="w-3/4 flex flex-wrap">
           {/* mapping data produk untuk Rendering List */}
-          {products.map((product) => (
-            <CardProduct key={product.id}>
-              {/* bisa tidak pakai props atau pakai juga bisa, seperti (image, name, price) */}
-              <CardProduct.Header image={product.image} />
-              <CardProduct.Body name={product.name}>
-                {product.description}
-              </CardProduct.Body>
-              <CardProduct.Footer
-                price={product.price}
-                id={product.id}
-                handleAddToCart={handleAddToCart}
-                // handleAddToCart={handleAddToCartRef}
-              />
-            </CardProduct>
-          ))}
+          {products.length > 0 &&
+            products.map((product) => (
+              <CardProduct key={product.id}>
+                {/* bisa tidak pakai props atau pakai juga bisa, seperti (image, name, price) */}
+                <CardProduct.Header image={product.image} />
+                <CardProduct.Body name={product.title}>
+                  {product.description}
+                </CardProduct.Body>
+                <CardProduct.Footer
+                  price={product.price}
+                  id={product.id}
+                  handleAddToCart={handleAddToCart}
+                  // handleAddToCart={handleAddToCartRef}
+                />
+              </CardProduct>
+            ))}
         </div>
 
         {/* Card */}
-        <div className="w-2/6">
+        <div className="w-2/5">
           <h1 className="text-3xl font-bold text-blue-600 ml-5 mb-2">Cart</h1>
           <table className="text-left table-auto border-separate border-spacing-x-5">
             <thead>
@@ -128,31 +140,32 @@ const ProductsPage = () => {
               </tr>
             </thead>
             <tbody>
-              {cart.map((item) => {
-                const product = products.find(
-                  (product) => product.id === item.id
-                );
-                return (
-                  <tr key={item.id}>
-                    <td>{product.name}</td>
-                    <td>
-                      Rp{" "}
-                      {product.price.toLocaleString("id-ID", {
-                        styles: "currency",
-                        currency: "IDR",
-                      })}
-                    </td>
-                    <td>{item.qty}</td>
-                    <td>
-                      Rp{" "}
-                      {(item.qty * product.price).toLocaleString("id-ID", {
-                        styles: "currency",
-                        currency: "IDR",
-                      })}
-                    </td>
-                  </tr>
-                );
-              })}
+              {products.length > 0 &&
+                cart.map((item) => {
+                  const product = products.find(
+                    (product) => product.id === item.id
+                  );
+                  return (
+                    <tr key={item.id}>
+                      <td>{product.title.substring(0, 15)}...</td>
+                      <td>
+                        ${" "}
+                        {product.price.toLocaleString("id-ID", {
+                          styles: "currency",
+                          currency: "USD",
+                        })}
+                      </td>
+                      <td>{item.qty}</td>
+                      <td>
+                        ${" "}
+                        {(item.qty * product.price).toLocaleString("id-ID", {
+                          styles: "currency",
+                          currency: "USD",
+                        })}
+                      </td>
+                    </tr>
+                  );
+                })}
 
               {/* total price */}
               <tr ref={totalPriceRef}>
@@ -161,10 +174,10 @@ const ProductsPage = () => {
                 </td>
                 <td>
                   <b>
-                    Rp{" "}
+                    ${" "}
                     {totalPrice.toLocaleString("id-ID", {
                       styles: "currency",
-                      currency: "IDR",
+                      currency: "USD",
                     })}
                   </b>
                 </td>
@@ -188,33 +201,33 @@ export default ProductsPage;
 const email = localStorage.getItem("email");
 
 // list produk data, untuk mapping banyak data dalam array
-const products = [
-  {
-    id: 1,
-    name: "Sepatu Baru",
-    price: 1000000,
-    image: "/images/shoes1.jpg",
-    description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Exercitationem suscipit qui ad facilis sunt consectetur consequuntur
-          tempora ipsum voluptates explicabo voluptate eligendi ipsa fugit, quae
-          quos repudiandae optio ducimus ipsam.`,
-  },
-  {
-    id: 2,
-    name: "Sepatu Lama",
-    price: 500000,
-    image: "/images/shoes2.jpg",
-    description: `tempora ipsum voluptates explicabo voluptate eligendi ipsa fugit, quae
-          quos repudiandae optio ducimus ipsam.`,
-  },
-  {
-    id: 3,
-    name: "Sepatu Lumayan",
-    price: 1400000,
-    image: "/images/shoes1.jpg",
-    description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Exercitationem suscipit qui ad facilis sunt consectetur consequuntur
-          tempora ipsum voluptates explicabo voluptate eligendi ipsa fugit, quae
-          quos repudiandae optio ducimus ipsam.`,
-  },
-];
+// const products = [
+//   {
+//     id: 1,
+//     name: "Sepatu Baru",
+//     price: 1000000,
+//     image: "/images/shoes1.jpg",
+//     description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
+//           Exercitationem suscipit qui ad facilis sunt consectetur consequuntur
+//           tempora ipsum voluptates explicabo voluptate eligendi ipsa fugit, quae
+//           quos repudiandae optio ducimus ipsam.`,
+//   },
+//   {
+//     id: 2,
+//     name: "Sepatu Lama",
+//     price: 500000,
+//     image: "/images/shoes2.jpg",
+//     description: `tempora ipsum voluptates explicabo voluptate eligendi ipsa fugit, quae
+//           quos repudiandae optio ducimus ipsam.`,
+//   },
+//   {
+//     id: 3,
+//     name: "Sepatu Lumayan",
+//     price: 1400000,
+//     image: "/images/shoes1.jpg",
+//     description: `Lorem ipsum dolor sit amet consectetur adipisicing elit.
+//           Exercitationem suscipit qui ad facilis sunt consectetur consequuntur
+//           tempora ipsum voluptates explicabo voluptate eligendi ipsa fugit, quae
+//           quos repudiandae optio ducimus ipsam.`,
+//   },
+// ];

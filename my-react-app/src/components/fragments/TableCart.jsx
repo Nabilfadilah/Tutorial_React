@@ -1,20 +1,20 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { DarkMode } from "../../context/DarkMode";
+import {
+  useTotalPrice,
+  useTotalPriceDispatch,
+} from "../../context/TotalPriceContext";
 
 const TableCart = (props) => {
   const { products } = props;
-
   // mengambil dari state manajemen/store
   const cart = useSelector((state) => state.cart.data);
-
-  const [totalPrice, setTotalPrice] = useState(0);
-
+  // const [totalPrice, setTotalPrice] = useState(0);
   // pemanggilan dark mode with useContext
   const { isDarkMode } = useContext(DarkMode);
-  {
-    console.log(isDarkMode);
-  }
+  const dispatch = useTotalPriceDispatch();
+  const { total } = useTotalPrice();
 
   // cara menggunakan didunmoun yaitu pakai useEffect
   useEffect(() => {
@@ -23,7 +23,13 @@ const TableCart = (props) => {
         const product = products.find((product) => product.id === item.id);
         return acc + product.price * item.qty;
       }, 0);
-      setTotalPrice(sum);
+      // setTotalPrice(sum);
+      dispatch({
+        type: "UPDATE",
+        payload: {
+          total: sum,
+        },
+      });
       // agar menyimpan ke localStorage, agar ketika di refres masih ada
       localStorage.setItem("cart", JSON.stringify(cart));
       // JSON.stringify, adalah sebuah function untuk konfersi JS value menjadi JSON
@@ -92,7 +98,7 @@ const TableCart = (props) => {
             <td>
               <b>
                 ${" "}
-                {totalPrice.toLocaleString("id-ID", {
+                {total.toLocaleString("id-ID", {
                   styles: "currency",
                   currency: "USD",
                 })}

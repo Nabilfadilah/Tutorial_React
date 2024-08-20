@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import CardProduct from "../components/fragments/CardProduct";
 import ButtonAll from "../components/elements/button";
 import Counter from "../components/fragments/Counter";
@@ -7,6 +7,7 @@ import { getUsername } from "../services/Auth.services";
 import { useLogin } from "../hooks/UseLogin";
 import TableCart from "../components/fragments/TableCart";
 import Navbar from "../components/layouts/Navbar";
+import { DarkMode } from "../context/DarkMode";
 
 // stateless/function component
 const ProductsPage = () => {
@@ -45,6 +46,12 @@ const ProductsPage = () => {
     });
   }, []);
 
+  // pemanggilan dark mode with useContext
+  const { isDarkMode, setIsDarkMode } = useContext(DarkMode);
+  {
+    console.log(isDarkMode);
+  }
+
   // // handle untuk logout
   // const handleLogout = () => {
   //   localStorage.removeItem("token");
@@ -82,19 +89,9 @@ const ProductsPage = () => {
     <>
       {/* navbar */}
       <Navbar />
-      <div className="flex justify-center py-5">
-        {/* <CardProduct> */}
-        {/* bisa tidak pakai props atau pakai juga bisa, seperti (image, name, price) */}
-        {/* <CardProduct.Header image="images/shoes1.jpg"></CardProduct.Header>
-        <CardProduct.Body name="Sepatu Paling Baru deh">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Exercitationem suscipit qui ad facilis sunt consectetur consequuntur
-          tempora ipsum voluptates explicabo voluptate eligendi ipsa fugit, quae
-          quos repudiandae optio ducimus ipsam.
-        </CardProduct.Body>
-        <CardProduct.Footer price="Rp. 1.000.000"></CardProduct.Footer> */}
-        {/* </CardProduct> */}
-
+      <div
+        className={`flex justify-center py-5 ${isDarkMode && "bg-slate-900"}`}
+      >
         {/* useState mapping Card*/}
         <div className="w-3/4 flex flex-wrap">
           {/* mapping data produk untuk Rendering List */}
@@ -164,3 +161,23 @@ export default ProductsPage;
 //           quos repudiandae optio ducimus ipsam.`,
 //   },
 // ];
+
+{
+  /* <CardProduct> */
+}
+{
+  /* bisa tidak pakai props atau pakai juga bisa, seperti (image, name, price) */
+}
+{
+  /* <CardProduct.Header image="images/shoes1.jpg"></CardProduct.Header>
+        <CardProduct.Body name="Sepatu Paling Baru deh">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Exercitationem suscipit qui ad facilis sunt consectetur consequuntur
+          tempora ipsum voluptates explicabo voluptate eligendi ipsa fugit, quae
+          quos repudiandae optio ducimus ipsam.
+        </CardProduct.Body>
+        <CardProduct.Footer price="Rp. 1.000.000"></CardProduct.Footer> */
+}
+{
+  /* </CardProduct> */
+}

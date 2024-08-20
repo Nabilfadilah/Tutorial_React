@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLogin } from "../../hooks/UseLogin";
 import ButtonAll from "../elements/button";
 import { useSelector } from "react-redux";
+import { DarkMode } from "../../context/DarkMode";
 
 const Navbar = () => {
   // untuk memanggil username
@@ -25,6 +26,12 @@ const Navbar = () => {
     window.location.href = "/login";
   };
 
+  // pemanggilan dark mode with useContext
+  const { isDarkMode, setIsDarkMode } = useContext(DarkMode);
+  {
+    console.log(isDarkMode);
+  }
+
   return (
     <div>
       <div className="flex justify-end h-20 bg-teal-800 text-white items-center px-10">
@@ -36,6 +43,14 @@ const Navbar = () => {
         <div className="flex items-center bg-gray-800 p-2 rounded-md ml-5">
           {totalCart}
         </div>
+
+        <ButtonAll
+          className="bg-yellow-700 px-10 mx-5 text-white rounded"
+          // jika posisinya true maka set false, dan jika posisinya false set jadi true
+          onClick={() => setIsDarkMode(!isDarkMode)}
+        >
+          {isDarkMode ? "Light" : "Dark"}
+        </ButtonAll>
       </div>
     </div>
   );
